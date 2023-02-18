@@ -8,6 +8,10 @@ export type InitialState = {
   
   export type AppStackParams = {
     HomeScreen: undefined;
-    DetailScreen:undefined
+    DetailScreen:{
+      id:number,
+      title:string,
+      completed:boolean
+    }
   };
  

@@ -7,6 +7,8 @@ import TodoRow from '../Components/TodoRow/TodoRow';
 import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../Components/Header/Header';
 import CustomButton from '../Components/CustomButton/CustomButton';
+import {Colors} from '../Constants/Colors';
+import { WIDTH, responsive } from '../Constants/Helpers';
 
 type Props = {
   navigation: NativeStackNavigationProp<AppStackParams, 'HomeScreen'>;
@@ -26,21 +28,29 @@ const HomeScreen = ({navigation}: Props) => {
       <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
         <Text>DETAIL SCREEN</Text>
       </TouchableOpacity> */}
-      <Header />
+      <View style={styles.headerArea}>
+        <Header />
+      </View>
       <ScrollView style={styles.list}>
         {data.map((item: any, index: any) => {
-          return <TodoRow onPress={() => {}} text={item.title} />;
+          return <TodoRow onPress={() => {
+            navigation.navigate('DetailScreen',{
+              id:item.id,
+              title:item.title,
+              completed:item.completed
+            })
+          }} text={item.title} />;
         })}
       </ScrollView>
       <View style={styles.button}>
         <CustomButton
           onPress={() => {}}
           text="Add"
-          textColor="red"
+          textColor={Colors.white}
           fontSize={20}
           borderRadius={10}
-          bgColor="orange"
-          width={'90%'}
+          bgColor={Colors.green}
+          width={WIDTH*.9}
           height={50}
         />
       </View>
@@ -51,16 +61,21 @@ const HomeScreen = ({navigation}: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#c2c2c2',
+    backgroundColor: Colors.gray,
+  },
+  headerArea: {
+    flex: 0.1,
+    paddingTop:responsive(20),
+    justifyContent:"flex-end"
   },
   list: {
-    flex: 0.75,
-    marginVertical: 10,
+    flex: 0.6,
+    marginTop:responsive(30)
   },
   button: {
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 0.15,
+    flex: 0.25,
   },
 });
 export default HomeScreen;

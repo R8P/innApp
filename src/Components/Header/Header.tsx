@@ -15,14 +15,11 @@ export default Header;
 
 const styles = StyleSheet.create({
   header: {
-    flex:.1,
-    justifyContent: 'flex-end',
-    alignSelf:"center",
-    alignItems:"baseline"
+    alignSelf: 'center',
   },
   title: {
     fontSize: 30,
     color: Colors.white,
-    fontWeight:"bold"
+    fontWeight: 'bold',
   },
 });
