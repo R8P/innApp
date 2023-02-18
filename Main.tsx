@@ -15,7 +15,7 @@ const Main = (props: Props) => {
   useEffect(() => {
     AsyncStorage.getItem('LOGIN_SUCCESS').then(value => {
       if (value) {
-        dispatch(setIsLoginSuccess(true));
+        dispatch(setIsLoginSuccess(false));
       } else {
         dispatch(setIsLoginSuccess(false));
       }

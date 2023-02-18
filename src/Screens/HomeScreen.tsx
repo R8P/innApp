@@ -8,7 +8,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../Components/Header/Header';
 import CustomButton from '../Components/CustomButton/CustomButton';
 import {Colors} from '../Constants/Colors';
-import { WIDTH, responsive } from '../Constants/Helpers';
+import {WIDTH, responsive} from '../Constants/Helpers';
 
 type Props = {
   navigation: NativeStackNavigationProp<AppStackParams, 'HomeScreen'>;
@@ -33,13 +33,19 @@ const HomeScreen = ({navigation}: Props) => {
       </View>
       <ScrollView style={styles.list}>
         {data.map((item: any, index: any) => {
-          return <TodoRow onPress={() => {
-            navigation.navigate('DetailScreen',{
-              id:item.id,
-              title:item.title,
-              completed:item.completed
-            })
-          }} text={item.title} />;
+          return (
+            <TodoRow
+              key={index}
+              onPress={() => {
+                navigation.navigate('DetailScreen', {
+                  id: item.id,
+                  title: item.title,
+                  completed: item.completed,
+                });
+              }}
+              text={item.title}
+            />
+          );
         })}
       </ScrollView>
       <View style={styles.button}>
@@ -50,7 +56,7 @@ const HomeScreen = ({navigation}: Props) => {
           fontSize={20}
           borderRadius={10}
           bgColor={Colors.green}
-          width={WIDTH*.9}
+          width={WIDTH * 0.9}
           height={50}
         />
       </View>
@@ -65,12 +71,12 @@ const styles = StyleSheet.create({
   },
   headerArea: {
     flex: 0.1,
-    paddingTop:responsive(20),
-    justifyContent:"flex-end"
+    paddingTop: responsive(20),
+    justifyContent: 'flex-end',
   },
   list: {
     flex: 0.6,
-    marginTop:responsive(30)
+    marginTop: responsive(30),
   },
   button: {
     flexDirection: 'column',
