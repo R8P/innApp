@@ -2,32 +2,36 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {AppStackParams} from '../Constants/types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {getData} from '../Redux/services/services';
+import {createUser, getUsers} from '../Redux/services/services';
 import TodoRow from '../Components/TodoRow/TodoRow';
 import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../Components/Header/Header';
 import CustomButton from '../Components/CustomButton/CustomButton';
 import {Colors} from '../Constants/Colors';
 import {WIDTH, responsive} from '../Constants/Helpers';
+import NewUserModal from '../Components/NewUserModal/NewUserModal';
+import {useAppDispatch, useAppSelector} from '../Redux/store/store';
+import {setNewUserModal, setUsers} from '../Redux/reducers/reducers';
 
 type Props = {
   navigation: NativeStackNavigationProp<AppStackParams, 'HomeScreen'>;
 };
 const HomeScreen = ({navigation}: Props) => {
+  const dispatch = useAppDispatch();
+  const {newUserModalVisble, users} = useAppSelector(state => state.global);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getData().then((res: any) => {
-      console.log('RES:RES', res.data);
-      setData(res.data);
+    console.log(users);
+    getUsers().then((res: any) => {
+      // console.log('RES:RES', res.data);
+      setData(res.data.data);
+   
     });
-  }, []);
+  }, [newUserModalVisble]);
+
   return (
     <View style={styles.container}>
-      {/* <Text>HOME SCREENS</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('DetailScreen')}>
-        <Text>DETAIL SCREEN</Text>
-      </TouchableOpacity> */}
       <View style={styles.headerArea}>
         <Header />
       </View>
@@ -39,19 +43,23 @@ const HomeScreen = ({navigation}: Props) => {
               onPress={() => {
                 navigation.navigate('DetailScreen', {
                   id: item.id,
-                  title: item.title,
-                  completed: item.completed,
+                  name: item.first_name,
+                  lastName: item.last_name,
+                  email: item.email,
+                  avatar: item.avatar,
                 });
               }}
-              text={item.title}
+              text={item.first_name}
             />
           );
         })}
       </ScrollView>
       <View style={styles.button}>
         <CustomButton
-          onPress={() => {}}
-          text="Add"
+          onPress={() => {
+            dispatch(setNewUserModal());
+          }}
+          text="New User"
           textColor={Colors.white}
           fontSize={20}
           borderRadius={10}
@@ -60,6 +68,7 @@ const HomeScreen = ({navigation}: Props) => {
           height={50}
         />
       </View>
+      {newUserModalVisble && <NewUserModal />}
     </View>
   );
 };

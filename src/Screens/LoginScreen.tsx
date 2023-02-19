@@ -11,85 +11,89 @@ import {useAppDispatch} from '../Redux/store/store';
 import {setIsLoginSuccess} from '../Redux/reducers/reducers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Colors} from '../Constants/Colors';
-import {Form, Field} from 'react-final-form';
 import {WIDTH, responsive} from '../Constants/Helpers';
 import CustomButton from '../Components/CustomButton/CustomButton';
+import {useForm, Controller} from 'react-hook-form';
 
 type Props = {};
-const required = (value: boolean) => !value && '*Required';
 
-// Custom Components
-const CustomTextInput = ({placeholder, input, meta, label}) => (
-  <View style={styles.container}>
-    {label && <Text style={styles.labelTitle}>{label}</Text>}
-    <TextInput style={styles.textInput} {...input} placeholder={placeholder} />
-    {meta.error && meta.touched && (
-      <Text style={styles.errorTitle}>{meta.error}</Text>
-    )}
-  </View>
-);
-
-const CustomField = ({name, placeholder, label, validate}) => {
-  return (
-    <Field
-      {...{name, validate}}
-      render={({input, meta}) => (
-        <>
-          <CustomTextInput {...{input, meta, label, placeholder}} />
-        </>
-      )}
-    />
-  );
-};
 const LoginScreen = (props: Props) => {
   const dispatch = useAppDispatch();
-  const initialValues = {email: '', password: '', securityQuestion: ''};
+
   const goAppWithStorage = async () => {
     await AsyncStorage.setItem('LOGIN_SUCCESS', 'true');
     dispatch(setIsLoginSuccess(true));
   };
-
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+  const onSubmit = (data: any) => {
+    goAppWithStorage();
+  };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.title}>
         <Text style={styles.titleText}>Welcome</Text>
       </View>
       <View style={styles.formContainer}>
-        <Form
-          initialValues={initialValues}
-          onSubmit={values => goAppWithStorage()}
-          render={({handleSubmit}) => {
-            return (
-              <>
-                <CustomField
-                  name="email"
-                  validate={required}
-                  placeholder="Enter Email"
-                  label="E-Mail"
-                />
-                <CustomField
-                  name="password"
-                  validate={required}
-                  placeholder="Enter password"
-                  label="Password"
-                />
-
-                <CustomButton
-                  onPress={() => {
-                    handleSubmit();
-                  }}
-                  text="Login"
-                  textColor={Colors.white}
-                  fontSize={20}
-                  borderRadius={10}
-                  bgColor={Colors.green}
-                  width={WIDTH * 0.9}
-                  height={50}
-                />
-              </>
-            );
+        <Text style={styles.label}>User Name</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
           }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={styles.textInput}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="username"
         />
+        {errors.username && (
+          <Text style={styles.errorText}>This is required.</Text>
+        )}
+        <Text style={styles.label}>Password</Text>
+        <Controller
+          control={control}
+          rules={{
+            maxLength: 100,
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={styles.textInput}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="password"
+        />
+        {errors.password && (
+          <Text style={styles.errorText}>This is required.</Text>
+        )}
+        <View style={styles.button}>
+          <CustomButton
+            onPress={handleSubmit(onSubmit)}
+            text="Login"
+            textColor={Colors.white}
+            fontSize={20}
+            borderRadius={10}
+            bgColor={Colors.green}
+            width={WIDTH * 0.9}
+            height={50}
+          />
+        </View>
       </View>
     </View>
   );
@@ -114,6 +118,7 @@ const styles = StyleSheet.create({
     padding: responsive(16),
     borderRadius: 8,
     color: Colors.darkGray,
+    marginVertical: responsive(5),
   },
 
   errorTitle: {
@@ -129,7 +134,7 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems:"center",
+    alignItems: 'center',
     flex: 0.35,
   },
   titleText: {
@@ -138,6 +143,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   formContainer: {
-    flex: 0.65,
+    marginHorizontal: responsive(20),
+    marginBottom: responsive(20),
+  },
+
+  label: {
+    color: Colors.smokeWhite,
+    fontSize: responsive(16),
+    marginBottom: responsive(5),
+    fontWeight: '600',
+  },
+  errorText: {
+    fontWeight: 'bold',
+    color: Colors.yellow,
+  },
+  button: {
+    marginTop: responsive(30),
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });

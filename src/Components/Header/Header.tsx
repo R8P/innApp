@@ -6,7 +6,7 @@ type Props = {};
 const Header = ({}: Props) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.title}>innAPP TODO</Text>
+      <Text style={styles.title}>innAPP</Text>
     </View>
   );
 };
