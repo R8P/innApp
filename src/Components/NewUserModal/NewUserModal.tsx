@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React from 'react';
 import {HEIGHT, WIDTH, responsive} from '../../Constants/Helpers';
@@ -14,6 +15,7 @@ import {useAppDispatch} from '../../Redux/store/store';
 import {setNewUserModal, setUsers} from '../../Redux/reducers/reducers';
 import {useForm, Controller} from 'react-hook-form';
 import {UserType} from '../../Constants/types';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type Props = {
   onSave: (data: UserType) => void;
@@ -60,112 +62,121 @@ const NewUserModal = ({onSave}: Props) => {
       useNativeDriver={true}
       animationOut={'slideInDown'}>
       <View style={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View style={styles.close}></View>
-            <Text style={styles.title}>New User</Text>
-            <TouchableOpacity
-              style={styles.close}
-              onPress={() => {
-                dispatch(setNewUserModal());
-              }}>
-              <Text style={styles.closeIcon}>X</Text>
-            </TouchableOpacity>
+        <KeyboardAvoidingView
+          behavior={'padding'}
+          // style={{flex:1}}
+          // keyboardVerticalOffset={0}
+          // contentContainerStyle={{flex: 1}}
+          >
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <View style={styles.close}></View>
+              <Text style={styles.title}>New User</Text>
+              <TouchableOpacity
+                style={styles.close}
+                onPress={() => {
+                  dispatch(setNewUserModal());
+                }}>
+                <Text style={styles.closeIcon}>X</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              <ScrollView automaticallyAdjustsScrollIndicatorInsets>
+                <Text style={styles.label}>First Name</Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: false,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <TextInput
+                      style={styles.textInput}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="first_name"
+                />
+                {errors.first_name && (
+                  <Text style={styles.errorText}>This is required.</Text>
+                )}
+                <Text style={styles.label}>Last Name</Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    maxLength: 100,
+                    required: false,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <TextInput
+                      style={styles.textInput}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="last_name"
+                />
+                {errors.last_name && (
+                  <Text style={styles.errorText}>This is required.</Text>
+                )}
+                <Text style={styles.label}>Email</Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    maxLength: 100,
+                    required: false,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <TextInput
+                      style={styles.textInput}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="email"
+                />
+                {errors.email && (
+                  <Text style={styles.errorText}>This is required.</Text>
+                )}
+                <Text style={styles.label}>Avatar URL</Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    maxLength: 100,
+                    required: false,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <TextInput
+                      style={styles.textInput}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="avatar"
+                />
+                {errors.avatar && (
+                  <Text style={styles.errorText}>This is required.</Text>
+                )}
+                <View style={styles.button}>
+                  <CustomButton
+                    onPress={handleSubmit(onSubmit)}
+                    text="Add"
+                    textColor={Colors.white}
+                    fontSize={20}
+                    borderRadius={10}
+                    bgColor={Colors.green}
+                    width={WIDTH * 0.8}
+                    height={50}
+                  />
+                </View>
+              </ScrollView>
+            </View>
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>First Name</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: false,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="first_name"
-            />
-            {errors.first_name && (
-              <Text style={styles.errorText}>This is required.</Text>
-            )}
-            <Text style={styles.label}>Last Name</Text>
-            <Controller
-              control={control}
-              rules={{
-                maxLength: 100,
-                required: false,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="last_name"
-            />
-            {errors.last_name && (
-              <Text style={styles.errorText}>This is required.</Text>
-            )}
-            <Text style={styles.label}>Email</Text>
-            <Controller
-              control={control}
-              rules={{
-                maxLength: 100,
-                required: false,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="email"
-            />
-            {errors.email && (
-              <Text style={styles.errorText}>This is required.</Text>
-            )}
-            <Text style={styles.label}>Avatar URL</Text>
-            <Controller
-              control={control}
-              rules={{
-                maxLength: 100,
-                required: false,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="avatar"
-            />
-            {errors.avatar && (
-              <Text style={styles.errorText}>This is required.</Text>
-            )}
-          </View>
-          <View style={styles.button}>
-            <CustomButton
-              onPress={handleSubmit(onSubmit)}
-              text="Add"
-              textColor={Colors.white}
-              fontSize={20}
-              borderRadius={10}
-              bgColor={Colors.green}
-              width={WIDTH * 0.8}
-              height={50}
-            />
-          </View>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
@@ -179,13 +190,14 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: 'rgba(0, 0, 0, 0.8));',
-    position: 'absolute',
+    // position: 'absolute',
     height: HEIGHT,
     width: WIDTH,
     zIndex: 9999,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom:responsive(150)
   },
   close: {},
   closeIcon: {
@@ -196,7 +208,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     width: WIDTH * 0.9,
-    height: HEIGHT * 0.7,
+    height: HEIGHT * 0.6,
     shadowColor: Colors.darkGray,
     shadowOffset: {width: 3, height: 4},
     shadowOpacity: 0.7,
@@ -229,6 +241,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'column',
     justifyContent: 'center',
+    marginTop:responsive(10)
   },
   inputContainer: {
     marginHorizontal: responsive(20),
