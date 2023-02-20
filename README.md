@@ -16,7 +16,6 @@ reqres.in api'sini kullanarak kullanıcıları listeleyen, anlık kullanıcı ek
 ```
 ## Android
 ```bash
-  android
   yarn run android
 ```
 
