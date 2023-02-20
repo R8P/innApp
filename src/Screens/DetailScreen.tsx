@@ -21,11 +21,11 @@ const DetailScreen = ({route}: Props) => {
           <View style={styles.cardCol}>
             <View style={styles.cardTextRow}>
               <Text style={styles.cardTextTitle}>Name:</Text>
-              <Text style={styles.cardText}>{route.params.name}</Text>
+              <Text style={styles.cardText}>{route.params.first_name}</Text>
             </View>
             <View style={styles.cardTextRow}>
               <Text style={styles.cardTextTitle}>Surname: </Text>
-              <Text style={styles.cardText}>{route.params.lastName}</Text>
+              <Text style={styles.cardText}>{route.params.last_name}</Text>
             </View>
             <View style={styles.cardTextRow}>
               <Text style={styles.cardTextTitle}>Email:</Text>

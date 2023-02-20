@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {AppStackParams, UserType} from '../Constants/types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {createUser, getUsers} from '../Redux/services/services';
-import TodoRow from '../Components/TodoRow/TodoRow';
+import {getUsers} from '../Redux/services/services';
+import UserRow from '../Components/UserRow/UserRow';
 import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../Components/Header/Header';
 import CustomButton from '../Components/CustomButton/CustomButton';
@@ -11,7 +11,7 @@ import {Colors} from '../Constants/Colors';
 import {WIDTH, responsive} from '../Constants/Helpers';
 import NewUserModal from '../Components/NewUserModal/NewUserModal';
 import {useAppDispatch, useAppSelector} from '../Redux/store/store';
-import {setNewUserModal, setUsers} from '../Redux/reducers/reducers';
+import {setNewUserModal} from '../Redux/reducers/reducers';
 
 type Props = {
   navigation: NativeStackNavigationProp<AppStackParams, 'HomeScreen'>;
@@ -20,22 +20,12 @@ const HomeScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
   const {newUserModalVisble, user} = useAppSelector(state => state.global);
   const [userList, setUserList] = useState<UserType[]>([]);
-  // const [newUser, setNewUser] = useState(Array<string>);
 
   useEffect(() => {
     getUsers().then((res: any) => {
       setUserList(res.data.data);
     });
   }, []);
-  useEffect(() => {
-    // users.name !== '' && console.log('USERS', users);
-    // users.name !== '' && userList.push();
-    // if (newUserModalVisble && user.name !== '') {
-    //   // let test: any = user;
-    //   // userList.push(test);
-    //   console.log('userlist', userList);
-    // }
-  }, [newUserModalVisble]);
 
   return (
     <View style={styles.container}>
@@ -45,7 +35,7 @@ const HomeScreen = ({navigation}: Props) => {
       <ScrollView style={styles.list}>
         {userList.map((item: any, index: any) => {
           return (
-            <TodoRow
+            <UserRow
               key={index}
               onPress={() => {
                 navigation.navigate('DetailScreen', {
@@ -78,7 +68,7 @@ const HomeScreen = ({navigation}: Props) => {
       {newUserModalVisble && (
         <NewUserModal
           onSave={data => {
-            setUserList([...userList, data]);
+            setUserList([data, ...userList]);
           }}
         />
       )}

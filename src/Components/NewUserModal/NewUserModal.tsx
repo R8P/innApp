@@ -35,7 +35,7 @@ const NewUserModal = ({onSave}: Props) => {
       first_name: '',
       last_name: '',
       email: '',
-      avatar: '',
+      avatar: 'https://reqres.in/img/faces/5-image.jpg',
     },
   });
   const onSubmit = (data: UserType) => {
@@ -67,7 +67,7 @@ const NewUserModal = ({onSave}: Props) => {
           // style={{flex:1}}
           // keyboardVerticalOffset={0}
           // contentContainerStyle={{flex: 1}}
-          >
+        >
           <View style={styles.card}>
             <View style={styles.cardHeader}>
               <View style={styles.close}></View>
@@ -86,7 +86,7 @@ const NewUserModal = ({onSave}: Props) => {
                 <Controller
                   control={control}
                   rules={{
-                    required: false,
+                    required: true,
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <TextInput
@@ -106,7 +106,7 @@ const NewUserModal = ({onSave}: Props) => {
                   control={control}
                   rules={{
                     maxLength: 100,
-                    required: false,
+                    required: true,
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <TextInput
@@ -126,7 +126,7 @@ const NewUserModal = ({onSave}: Props) => {
                   control={control}
                   rules={{
                     maxLength: 100,
-                    required: false,
+                    required: true,
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <TextInput
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom:responsive(150)
+    paddingBottom: responsive(150),
   },
   close: {},
   closeIcon: {
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop:responsive(10)
+    marginTop: responsive(10),
   },
   inputContainer: {
     marginHorizontal: responsive(20),

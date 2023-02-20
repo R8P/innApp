@@ -8,7 +8,7 @@ type Props = {
   text: string;
   completed?: boolean;
 };
-const TodoRow = ({onPress, text, completed}: Props) => {
+const UserRow = ({onPress, text, completed}: Props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image
@@ -20,7 +20,7 @@ const TodoRow = ({onPress, text, completed}: Props) => {
   );
 };
 
-export default TodoRow;
+export default UserRow;
 
 const styles = StyleSheet.create({
   container: {
@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: responsive(70),
     marginVertical: responsive(10),
-    flexDirection:"row",
-    alignItems:"center",
-    paddingHorizontal:responsive(20)
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: responsive(20),
   },
   text: {
-    width:WIDTH*.7,
-    marginLeft:responsive(10),
+    width: WIDTH * 0.7,
+    marginLeft: responsive(10),
     color: Colors.white,
     fontSize: responsive(14),
   },

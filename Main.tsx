@@ -17,11 +17,6 @@ const Main = (props: Props) => {
     AsyncStorage.getItem('LOGIN_SUCCESS').then(value => {
       if (value) {
         dispatch(setIsLoginSuccess(true));
-        // getUsers().then((res: any) => {
-        //   let userList = Object.assign({}, res.data.data);
-        //   dispatch(setUsers(userList));
-
-        // });
       } else {
         dispatch(setIsLoginSuccess(false));
       }
