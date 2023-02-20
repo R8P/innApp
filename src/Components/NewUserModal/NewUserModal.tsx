@@ -13,30 +13,43 @@ import Modal from 'react-native-modal';
 import {useAppDispatch} from '../../Redux/store/store';
 import {setNewUserModal, setUsers} from '../../Redux/reducers/reducers';
 import {useForm, Controller} from 'react-hook-form';
+import {UserType} from '../../Constants/types';
 
-const NewUserModal = () => {
+type Props = {
+  onSave: (data: UserType) => void;
+};
+const NewUserModal = ({onSave}: Props) => {
   const dispatch = useAppDispatch();
+  const getRandomInt = (max: number) => {
+    return Math.floor(Math.random() * max);
+  };
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      id: 0,
+      first_name: '',
+      last_name: '',
       email: '',
       avatar: '',
     },
   });
-  const onSubmit = (data: any) => {
-    dispatch(
-      setUsers({
-        name: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        avatar: data.avatar,
-      }),
-    );
+  const onSubmit = (data: UserType) => {
+    data.first_name !== '' &&
+      dispatch(
+        setUsers({
+          id: getRandomInt(100),
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email,
+          avatar: data.avatar,
+        }),
+      );
+
+    onSave(data);
+    dispatch(setNewUserModal());
     console.log(data);
   };
   return (
@@ -64,7 +77,7 @@ const NewUserModal = () => {
             <Controller
               control={control}
               rules={{
-                required: true,
+                required: false,
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
@@ -74,9 +87,9 @@ const NewUserModal = () => {
                   value={value}
                 />
               )}
-              name="firstName"
+              name="first_name"
             />
-            {errors.firstName && (
+            {errors.first_name && (
               <Text style={styles.errorText}>This is required.</Text>
             )}
             <Text style={styles.label}>Last Name</Text>
@@ -84,7 +97,7 @@ const NewUserModal = () => {
               control={control}
               rules={{
                 maxLength: 100,
-                required: true,
+                required: false,
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
@@ -94,9 +107,9 @@ const NewUserModal = () => {
                   value={value}
                 />
               )}
-              name="lastName"
+              name="last_name"
             />
-            {errors.lastName && (
+            {errors.last_name && (
               <Text style={styles.errorText}>This is required.</Text>
             )}
             <Text style={styles.label}>Email</Text>
@@ -104,7 +117,7 @@ const NewUserModal = () => {
               control={control}
               rules={{
                 maxLength: 100,
-                required: true,
+                required: false,
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
@@ -124,7 +137,7 @@ const NewUserModal = () => {
               control={control}
               rules={{
                 maxLength: 100,
-                required: true,
+                required: false,
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput

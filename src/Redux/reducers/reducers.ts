@@ -5,10 +5,10 @@ import {InitialState} from '../../Constants/types';
 export const initialState: InitialState = {
   isLoginSuccess: false,
   newUserModalVisble: false,
-  users: {
+  user: {
     id: 0,
-    name: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     avatar: '',
   },
@@ -25,7 +25,7 @@ export const reducer = createSlice({
       state.newUserModalVisble = !state.newUserModalVisble;
     },
     setUsers: (state, action: PayloadAction<any>) => {
-      state.users = action.payload;
+      state.user = action.payload;
     },
   },
   extraReducers: builder => {

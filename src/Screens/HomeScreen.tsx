@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import {AppStackParams} from '../Constants/types';
+import {AppStackParams, UserType} from '../Constants/types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {createUser, getUsers} from '../Redux/services/services';
 import TodoRow from '../Components/TodoRow/TodoRow';
@@ -18,16 +18,23 @@ type Props = {
 };
 const HomeScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
-  const {newUserModalVisble, users} = useAppSelector(state => state.global);
-  const [data, setData] = useState([]);
+  const {newUserModalVisble, user} = useAppSelector(state => state.global);
+  const [userList, setUserList] = useState<UserType[]>([]);
+  // const [newUser, setNewUser] = useState(Array<string>);
 
   useEffect(() => {
-    console.log(users);
     getUsers().then((res: any) => {
-      // console.log('RES:RES', res.data);
-      setData(res.data.data);
-   
+      setUserList(res.data.data);
     });
+  }, []);
+  useEffect(() => {
+    // users.name !== '' && console.log('USERS', users);
+    // users.name !== '' && userList.push();
+    // if (newUserModalVisble && user.name !== '') {
+    //   // let test: any = user;
+    //   // userList.push(test);
+    //   console.log('userlist', userList);
+    // }
   }, [newUserModalVisble]);
 
   return (
@@ -36,15 +43,15 @@ const HomeScreen = ({navigation}: Props) => {
         <Header />
       </View>
       <ScrollView style={styles.list}>
-        {data.map((item: any, index: any) => {
+        {userList.map((item: any, index: any) => {
           return (
             <TodoRow
               key={index}
               onPress={() => {
                 navigation.navigate('DetailScreen', {
                   id: item.id,
-                  name: item.first_name,
-                  lastName: item.last_name,
+                  first_name: item.first_name,
+                  last_name: item.last_name,
                   email: item.email,
                   avatar: item.avatar,
                 });
@@ -68,7 +75,13 @@ const HomeScreen = ({navigation}: Props) => {
           height={50}
         />
       </View>
-      {newUserModalVisble && <NewUserModal />}
+      {newUserModalVisble && (
+        <NewUserModal
+          onSave={data => {
+            setUserList([...userList, data]);
+          }}
+        />
+      )}
     </View>
   );
 };

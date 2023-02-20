@@ -1,13 +1,7 @@
 export type InitialState = {
   isLoginSuccess: boolean;
-  newUserModalVisble:boolean;
-  users: {
-    id:number,
-    name: string;
-    lastName: string;
-    email: string;
-    avatar: string;
-  };
+  newUserModalVisble: boolean;
+  user: UserType;
 };
 
 export type LoginStackParams = {
@@ -18,9 +12,17 @@ export type AppStackParams = {
   HomeScreen: undefined;
   DetailScreen: {
     id: number;
-    name: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
     avatar: string;
   };
+};
+
+export type UserType = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar: string;
 };

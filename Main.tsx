@@ -5,7 +5,8 @@ import AppStack from './src/Stacks/AppStack';
 import LoginStack from './src/Stacks/LoginStack';
 import {useAppDispatch, useAppSelector} from './src/Redux/store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setIsLoginSuccess} from './src/Redux/reducers/reducers';
+import {setIsLoginSuccess, setUsers} from './src/Redux/reducers/reducers';
+import {getUsers} from './src/Redux/services/services';
 
 type Props = {};
 
@@ -16,6 +17,11 @@ const Main = (props: Props) => {
     AsyncStorage.getItem('LOGIN_SUCCESS').then(value => {
       if (value) {
         dispatch(setIsLoginSuccess(true));
+        // getUsers().then((res: any) => {
+        //   let userList = Object.assign({}, res.data.data);
+        //   dispatch(setUsers(userList));
+
+        // });
       } else {
         dispatch(setIsLoginSuccess(false));
       }
